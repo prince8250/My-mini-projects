@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.TaskManager.taskManager.model.task;
@@ -56,5 +57,14 @@ public class taskController {
     public ResponseEntity<Void> deleteTask(@PathVariable Long id){
         service.deleteTask(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity<List<task>> filterTask(
+        @RequestParam(required = false) String priority,
+        @RequestParam(required = false) Boolean completed){
+            
+        List<task> filtered = service.filterTask(priority,completed);
+        return new ResponseEntity<>(filtered, HttpStatus.FOUND);
     }
 }

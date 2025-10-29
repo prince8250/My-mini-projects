@@ -2,6 +2,8 @@ package com.TaskManager.taskManager.services;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,5 +48,18 @@ public class taskService {
 
     public void addMultipleTasks(List<task> tasks) {
         repo.saveAll(tasks);
+    }
+
+    public List<task> filterTask(String priority, Boolean completed) {
+        List<task> tasks = repo.findAll();
+        Stream<task> stream = tasks.stream();
+        
+        if (priority != null && !priority.isEmpty()){
+            stream = stream.filter(task -> task.getPriority().equalsIgnoreCase(priority));
+        }
+        if (completed !=null){
+            stream =stream.filter(task -> task.isCompleted() == completed);
+        }
+        return stream.collect(Collectors.toList());
     }
 }
