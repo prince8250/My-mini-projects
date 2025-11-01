@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.TaskManager2.taskManager2.models.task;
@@ -36,13 +37,18 @@ public class taskController {
     }
     
     @PutMapping("/tasks/{id}")
-    public ResponseEntity<Void> updateTask(@PathVariable UUID id, @RequestBody task updateTask){
-        service.updateTask(id, updateTask);
+    public ResponseEntity<Void> updateTask(@PathVariable UUID id, @RequestBody task updatedTask){
+        service.updateTask(id, updatedTask);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/tasks/{id}")
     public ResponseEntity<task> getById(@PathVariable UUID id){
         return new ResponseEntity<>(service.getById(id),HttpStatus.FOUND);
+    }
+
+    @GetMapping("tasks/filter")
+    public ResponseEntity<List<task>> filterTask(@RequestParam String status){
+        return new ResponseEntity<>(service.filterTask(status), HttpStatus.OK);
     }
 }
