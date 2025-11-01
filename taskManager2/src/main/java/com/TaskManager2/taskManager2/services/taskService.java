@@ -51,5 +51,9 @@ public class taskService {
         return filtered;
     }
 
-    
+    public void deleteTask(UUID id) {
+        task delTask = repo.findById(id).orElse(null);
+        repo.delete(delTask);
+    }
+
 }
